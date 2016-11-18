@@ -22,7 +22,7 @@
         ul li{
             flex:1;
             -webkit-flex:1;
-            min-width:40%;
+            min-width:20%;
             margin:15px 30px 15px 0;
         }
         section{
@@ -35,27 +35,78 @@
             height:0;
             width:100%;
             padding-bottom:100%;
-            overflow-y: hidden;
-            background:url('./loadding.gif') no-repeat;
-            background-size: 30px 30px;
-            background-position:50% 50%;
-            background-color: #ccc;
+            position:relative;
+        }
+        .img-div-float{
+            position:absolute;
+            left:0;
+            top:0;
+            width:100%;
+            height:100%;
+            opacity:1;
+            transition:all .5s;
+            background: url(./loadding.gif) no-repeat;
+            background-position: 50% 50%;
+            background-color: #fff;
+            background-size: 30px;
         }
         img{
             display: block;
             width:100%;
-            opacity:0;
-            -webkit-transition:opacity 0.8s;
-            transition:opacity 0.8s;
-        }
-        img.loaded{
-            opacity:1;
         }
     </style>
 </head>
 <body>
     <section>
         <ul>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
             <li>
 
                 <div class="com-img-con">
@@ -131,12 +182,19 @@
                     [].forEach.call(imgs,function(r){
                         let lt = {l:0,t:0};
                         lt = getLT(r,lt);
-                        if(st + winH > lt.t){
+                        if(st + winH > lt.t && r.getAttribute('loading') != '1'){
+                            r.setAttribute('loading','1');
                             r.onload = function(){
                                 r.className = r.className.replace(imgclass.substr(1),'');
-                                r.className += (r.className ? " loaded":"loaded");
+                                var idf = r.offsetParent.querySelectorAll('.img-div-float');
+                                [].forEach.call(idf,function(t){
+                                    t.style.opacity="0";
+                                })
                             }
                             r.setAttribute('src',r.getAttribute('data-src'));
+                            var div = document.createElement('div');
+                            div.className = 'img-div-float';
+                            r.offsetParent.appendChild(div);
                         }
                     })
                 }
