@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body,div,img{
+            margin:0;
+            padding:0;
+        }
+        body{
+            background-color: #eee;
+        }
+        ul{
+            list-style:none;
+            display: flex;
+            display: -webkit-flex;
+            -webkit-flex-wrap:wrap;
+            flex-wrap:wrap;
+            padding-left:30px;
+        }
+        ul li{
+            flex:1;
+            -webkit-flex:1;
+            min-width:40%;
+            margin:15px 30px 15px 0;
+        }
+        section{
+            width:1200px;
+            margin:20px auto;
+            border: 1px solid red;
+        }
+        .com-img-con{
+            display: block;
+            height:0;
+            width:100%;
+            padding-bottom:100%;
+            overflow-y: hidden;
+            background:url('./loadding.gif') no-repeat;
+            background-size: 30px 30px;
+            background-position:50% 50%;
+            background-color: #ccc;
+        }
+        img{
+            display: block;
+            width:100%;
+            opacity:0;
+            -webkit-transition:opacity 0.8s;
+            transition:opacity 0.8s;
+        }
+        img.loaded{
+            opacity:1;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <ul>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477193030870_4GGMrQ6WjZ.jpg"/>
+                </div>
+            </li>
+            <li>
+
+                <div class="com-img-con">
+                    <img class="data_src_img" data-src="http://wicdn.xiaohongchun.com/xhc-plat/1477192708771_JM37WH2SJC.jpg"/>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <script>
+
+        !(function(w){
+            var imgclass = '.data_src_img';
+            function getDom(all,filter){
+                return !all ? document.body.querySelector(filter) : document.body.querySelectorAll(filter);
+            }
+            function getLT(dom,lt){
+                if(lt && lt.t != undefined){
+                    lt.t += dom.offsetTop;
+                    //lt.l += dom.offsetLeft;
+                    return dom.offsetParent ? getLT(dom.offsetParent,lt) : lt;
+                }else{
+                    return lt;
+                }
+            }
+            w['imgScrollLazyLoad'] = function(){
+                var winH = document.documentElement.clientHeight;
+                var scroll = function(){
+                    var imgs = getDom(true,imgclass);
+                    if(!imgs) return;
+                    var st = document.body.scrollTop;
+                    [].forEach.call(imgs,function(r){
+                        let lt = {l:0,t:0};
+                        lt = getLT(r,lt);
+                        if(st + winH > lt.t){
+                            r.onload = function(){
+                                r.className = r.className.replace(imgclass.substr(1),'');
+                                r.className += (r.className ? " loaded":"loaded");
+                            }
+                            r.setAttribute('src',r.getAttribute('data-src'));
+                        }
+                    })
+                }
+                scroll();//第一屏幕的替换data-src为src
+                window.addEventListener('scroll',scroll,false);
+                return scroll;
+            }
+        })(window)
+        window.imgScrollLazyLoad()
+    </script>
+</body>
+</html>
